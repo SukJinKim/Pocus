@@ -1,4 +1,7 @@
-export const Tomato = (props) => (
+import type { SVGProps } from "react";
+import type { JSX } from "react/jsx-runtime";
+
+export const Tomato = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32" {...props}>
         <g fill="none">
             <path stroke="#8ECB1F" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" strokeWidth="2" d="M15.99 10.42V6"></path>
