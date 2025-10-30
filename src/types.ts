@@ -1,15 +1,28 @@
 type Mode = "focus" | "break";
 
-type SettingsType = {
+type Settings = {
     focusMinutes: number; // default 25
     breakMinutes: number; // default 5
 };
 
-type PomodoroTimer = {
+type TimerState = {
     mode: Mode;
     totalSeconds: number;
     remainingSeconds: number;
     running: boolean;
 };
 
-export type { Mode, SettingsType, PomodoroTimer }
+type TimerAction =
+    | { type: "START" }
+    | { type: "PAUSE" }
+    | { type: "TICK"; payload: { remainingSeconds: number } }
+    | { type: "RESET"; payload: { mode: Mode; totalSeconds: number; remainingSeconds: number } }
+    | { type: "SWITCH"; payload: { mode: Mode; totalSeconds: number; remainingSeconds: number } };
+
+type UseTimerResult = {
+    timer: TimerState;
+    toggleRunning: () => void;
+    resetTimer: (overrideSettings?: Settings) => void;
+};
+
+export type { Mode, Settings, TimerState, TimerAction, UseTimerResult }
