@@ -1,15 +1,15 @@
 ﻿import { Button } from "./ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Label } from "./ui/label";
-import { Settings } from "lucide-react";
+import { Settings as SettingsIcon } from "lucide-react";
 import { Slider } from "./ui/slider";
 import { useEffect, useState, type FormEvent } from "react";
-import type { SettingsType } from "@/types";
+import type { Settings } from "@/types";
 
 type SettingsDialogProps = {
-    settings: SettingsType;
+    settings: Settings;
     className?: string;
-    onSave: (next: SettingsType) => void;
+    onSave: (next: Settings) => void;
 };
 
 function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
@@ -34,7 +34,7 @@ function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
             <Dialog>
                 <DialogTrigger asChild>
                     <Button className="text-gray-500" variant="ghost" size="sm" aria-label="Settings">
-                        <Settings />
+                        <SettingsIcon />
                         <span className="hidden sm:inline-block">설정</span>
                     </Button>
                 </DialogTrigger>
