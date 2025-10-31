@@ -33,7 +33,7 @@ function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
         <div className={className}>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className="text-gray-500" variant="ghost" size="sm" aria-label="Settings">
+                    <Button className="text-gray-500 dark:text-gray-100" variant="ghost" size="sm" aria-label="Settings">
                         <SettingsIcon />
                         <span className="hidden sm:inline-block">설정</span>
                     </Button>
@@ -56,6 +56,7 @@ function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
                                     id="focusMinutes"
                                     value={focusMinutes}
                                     onValueChange={setFocusMinutes}
+                                    min={1}
                                     max={60}
                                     step={1}
                                 />
@@ -69,6 +70,7 @@ function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
                                     id="breakMinutes"
                                     value={breakMinutes}
                                     onValueChange={setBreakMinutes}
+                                    min={1}
                                     max={60}
                                     step={1}
                                 />
