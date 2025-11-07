@@ -1,6 +1,6 @@
 import { createElement, useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 import { Flame, Leaf } from "lucide-react";
-import type { Mode, Settings, TimerAction, TimerState, UseTimerResult } from "@/types";
+import type { Mode, Settings, TimerAction, TimerState, UseTimerResult } from "~/shared/types";
 import { toast } from "sonner";
 
 const TICK_MS = 1000;

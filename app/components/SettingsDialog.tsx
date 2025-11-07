@@ -4,7 +4,7 @@ import { Label } from "./ui/label";
 import { Settings as SettingsIcon } from "lucide-react";
 import { Slider } from "./ui/slider";
 import { useEffect, useState, type FormEvent } from "react";
-import type { Settings } from "@/types";
+import type { Settings } from "~/shared/types";
 
 type SettingsDialogProps = {
     settings: Settings;

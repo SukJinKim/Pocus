@@ -1,34 +1,50 @@
-﻿import { Flame, Leaf, Pause, Play, RotateCcw } from "lucide-react";
-import { Button } from './components/ui/button';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Card, CardContent } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { CircularProgressbar } from './components/CircularProgressbar';
-import { Toaster } from './components/ui/sonner';
-import { SettingsDialog } from "./components/SettingsDialog";
-import { formatTime, todayKey } from "./utils";
-import { useTimer } from "./hooks/useTimer";
-import type { Settings } from "@/types";
-import { Tomato } from "./components/Tomato";
+import type { Settings } from "~/shared/types";
+import type { Route } from "./+types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { LS_KEYS } from "~/shared/constants";
+import { formatTime, todayKey } from "~/lib/utils";
 import { toast } from "sonner";
-import { LS_KEYS } from "./constants";
-import { ThemeProvider } from "./components/theme-provider";
-import { ModeToggle } from "./components/mode-toggle";
+import { ThemeProvider } from "~/components/theme-provider";
+import { Tomato } from "~/components/Tomato";
+import { ModeToggle } from "~/components/mode-toggle";
+import { SettingsDialog } from "~/components/SettingsDialog";
+import { Card, CardContent } from "~/components/ui/card";
+import { Badge } from "~/components/ui/badge";
+import { Flame, Leaf, Pause, Play, RotateCcw } from "lucide-react";
+import { CircularProgressbar } from "~/components/CircularProgressbar";
+import { Button } from "~/components/ui/button";
+import { Toaster } from "~/components/ui/sonner";
+import { useTimer } from "~/hooks/useTimer";
 
-function App() {
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Pocus" },
+    { name: "description", content: "Stay focus with Pocus!" },
+  ];
+}
+
+const isBrowser = typeof window !== "undefined";
+
+export default function Home() {
   const initialSettings: Settings = useMemo(() => {
+    if (!isBrowser) {
+      return { focusMinutes: 25, breakMinutes: 5 };
+    }
+
     try {
-      const raw = localStorage.getItem(LS_KEYS.settings);
+      const raw = window.localStorage.getItem(LS_KEYS.settings);
       if (raw) return JSON.parse(raw) as Settings;
     } catch (error) {
-      console.error('Failed to load initial settings', error);
+      console.error("Failed to load initial settings", error);
     }
     return { focusMinutes: 25, breakMinutes: 5 };
   }, []);
 
   const initialTodaySessions: number = useMemo(() => {
+    if (!isBrowser) return 0;
+
     try {
-      const raw = localStorage.getItem(LS_KEYS.sessionsByDay);
+      const raw = window.localStorage.getItem(LS_KEYS.sessionsByDay);
       if (!raw) return 0;
       const byDay = JSON.parse(raw) as Record<string, number>;
       return byDay[todayKey()] ?? 0;
@@ -53,10 +69,10 @@ function App() {
         const next = prev + 1;
 
         try {
-          const raw = localStorage.getItem(LS_KEYS.sessionsByDay);
+          const raw = window.localStorage.getItem(LS_KEYS.sessionsByDay);
           const byDay = raw ? (JSON.parse(raw) as Record<string, number>) : {};
           byDay[today] = next;
-          localStorage.setItem(LS_KEYS.sessionsByDay, JSON.stringify(byDay));
+          window.localStorage.setItem(LS_KEYS.sessionsByDay, JSON.stringify(byDay));
         } catch (error) {
           console.error("Failed to persist session count", error);
         }
@@ -82,7 +98,9 @@ function App() {
   function onSaveSettings(next: Settings): void {
     setSettings(next);
     try {
-      localStorage.setItem(LS_KEYS.settings, JSON.stringify(next));
+      if (isBrowser) {
+        window.localStorage.setItem(LS_KEYS.settings, JSON.stringify(next));
+      }
     } catch (e) {
       toast.error("세팅을 저장하지 못했어요. 잠시 후 다시 시도해주세요.")
       console.error("Failed to save settings", e);
@@ -173,5 +191,3 @@ function App() {
     </>
   )
 }
-
-export default App
