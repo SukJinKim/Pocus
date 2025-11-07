@@ -56,7 +56,6 @@ function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
                                     id="focusMinutes"
                                     value={focusMinutes}
                                     onValueChange={setFocusMinutes}
-                                    min={1}
                                     max={60}
                                     step={1}
                                 />
@@ -70,13 +69,12 @@ function SettingsDialog({ settings, className, onSave }: SettingsDialogProps) {
                                     id="breakMinutes"
                                     value={breakMinutes}
                                     onValueChange={setBreakMinutes}
-                                    min={1}
                                     max={60}
                                     step={1}
                                 />
                             </div>
                         </div>
-                        <DialogFooter className="pt-2 gap-3">
+                        <DialogFooter className="mt-6 gap-2">
                             <DialogClose asChild>
                                 <Button variant="outline">닫기</Button>
                             </DialogClose>
