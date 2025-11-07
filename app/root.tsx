@@ -9,11 +9,15 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { ThemeProvider } from "~/components/theme-provider";
+import { Toaster } from "./components/ui/sonner";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "icon",
+  {
+    rel: "icon",
     type: "image/svg+xml",
-    href: "/tomato.svg" },
+    href: "/tomato.svg"
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -35,7 +39,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="pocus-ui-theme">
+      <Outlet />
+      <Toaster position={'top-right'} />
+    </ThemeProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
