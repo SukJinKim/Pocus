@@ -4,17 +4,18 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { LS_KEYS } from "~/shared/constants";
 import { formatTime, todayKey } from "~/lib/utils";
 import { toast } from "sonner";
-import { ThemeProvider } from "~/components/theme-provider";
-import { Tomato } from "~/components/Tomato";
+
 import { ModeToggle } from "~/components/mode-toggle";
-import { SettingsDialog } from "~/components/SettingsDialog";
+
 import { Card, CardContent } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Flame, Leaf, Pause, Play, RotateCcw } from "lucide-react";
-import { CircularProgressbar } from "~/components/CircularProgressbar";
+
 import { Button } from "~/components/ui/button";
-import { Toaster } from "~/components/ui/sonner";
 import { useTimer } from "~/hooks/useTimer";
+import { SettingsDialog } from "~/components/SettingsDialog";
+import { Tomato } from "~/components/Tomato";
+import { CircularProgressbar } from "~/components/CircularProgressbar";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -111,83 +112,81 @@ export default function Home() {
 
   return (
     <>
-      <ThemeProvider defaultTheme="system" storageKey="pocus-ui-theme">
-        <div className="min-h-dvh bg-neutral-100 dark:bg-neutral-950 px-4 py-10 flex justify-center">
-          <div className="w-full max-w-3xl flex flex-col">
-            {/* Header */}
-            <header className="w-full py-4 mb-8 border-b border-b-slate-200">
-              <div className="max-w-3xl mx-auto px-6 flex flex-wrap items-end justify-between gap-4 text-left">
-                <div>
-                  <h1 className="text-2xl font-bold">Pocus </h1>
-                  <span className="text-gray-400">Stay focus with pomodoro!&nbsp;<Tomato className={"inline-block"} /></span>
-                </div>
-                <div className="flex items-center gap-3 ml-auto">
-                  <ModeToggle />
-                  <SettingsDialog
-                    className="inline-flex items-center"
-                    settings={settings}
-                    onSave={onSaveSettings} />
-                </div>
-              </div>
-            </header >
-
-            {/* Timer */}
-            <Card className="w-full max-w-lg mx-auto">
-              <CardContent className="px-8 py-10">
-                <div className="flex flex-col items-center gap-6">
-                  {timer.mode === "focus" ? (
-                    <Badge
-                      variant="secondary"
-                      className="bg-rose-500 text-white dark:bg-rose-600"
-                    >
-                      <Flame /> 집중 세션
-                    </Badge>
-                  ) : (
-                    <Badge
-                      variant="secondary"
-                      className="bg-teal-500 text-white dark:bg-teal-600"
-                    >
-                      <Leaf /> 휴식 세션
-                    </Badge>
-                  )}
-
-                  {/* Circular Progressbar */}
-                  <CircularProgressbar
-                    remaining={timer.remainingSeconds}
-                    total={timer.totalSeconds}
-                    text={formatTime(timer.remainingSeconds)}
-                    className="mx-auto"
-                    strokeWidth={16}
-                    pathColor={timer.mode === "focus" ? "var(--color-rose-500)" : "var(--color-teal-500)"}
-                    textColor={timer.mode === "focus" ? "var(--color-rose-500)" : "var(--color-teal-500)"}
-                  />
-
-                  {/* Controls (Start/Pause, Reset) */}
-                  <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
-                    <Button variant="outline" size="lg" aria-label={timer.running ? "Pause" : "Play"} onClick={onStartPause}>
-                      {timer.running ? <><Pause />&nbsp;일시정지</> : <><Play />&nbsp;시작</>
-                      }
-                    </Button>
-                    <Button variant="outline" size="lg" aria-label="reset" onClick={onReset}>
-                      <RotateCcw />&nbsp;초기화
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card >
-
-            {/* Footer */}
-            <footer className="w-full max-w-lg mx-auto mt-6 flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-300">
-              <div>오늘 완료 세션: <span className="font-semibold text-neutral-800 dark:text-neutral-100">{todaySessions}</span>&nbsp;회</div>
+      <div className="min-h-dvh bg-neutral-100/80 dark:bg-neutral-950 px-4 py-10 flex justify-center">
+        <div className="w-full max-w-2xl flex flex-col">
+          {/* Header */}
+          <header className="w-full py-4 mb-8 border-b border-b-slate-200">
+            <div className="max-w-3xl mx-auto px-6 flex flex-wrap items-end justify-between gap-4 text-left">
               <div>
-                집중 {settings.focusMinutes}분 · 휴식 {settings.breakMinutes}분
+                <div className="inline-flex items-center justify-center gap-2 text-xl font-bold">
+                  <Tomato className="size-6" />
+                  <span>Pocus</span>
+                </div>
               </div>
-            </footer>
-          </div>
-        </div>
+              <div className="flex items-center gap-3 ml-auto">
+                <ModeToggle />
+                <SettingsDialog
+                  className="inline-flex items-center"
+                  settings={settings}
+                  onSave={onSaveSettings} />
+              </div>
+            </div>
+          </header >
 
-        <Toaster position={'top-right'} />
-      </ThemeProvider>
+          {/* Timer */}
+          <Card className="w-full max-w-lg mx-auto">
+            <CardContent className="px-8 py-10">
+              <div className="flex flex-col items-center gap-6">
+                {timer.mode === "focus" ? (
+                  <Badge
+                    variant="secondary"
+                    className="bg-rose-500 text-white dark:bg-rose-600"
+                  >
+                    <Flame /> 집중 세션
+                  </Badge>
+                ) : (
+                  <Badge
+                    variant="secondary"
+                    className="bg-teal-500 text-white dark:bg-teal-600"
+                  >
+                    <Leaf /> 휴식 세션
+                  </Badge>
+                )}
+
+                {/* Circular Progressbar */}
+                <CircularProgressbar
+                  remaining={timer.remainingSeconds}
+                  total={timer.totalSeconds}
+                  text={formatTime(timer.remainingSeconds)}
+                  className="mx-auto"
+                  strokeWidth={16}
+                  pathColor={timer.mode === "focus" ? "var(--color-rose-500)" : "var(--color-teal-500)"}
+                  textColor={timer.mode === "focus" ? "var(--color-rose-500)" : "var(--color-teal-500)"}
+                />
+
+                {/* Controls (Start/Pause, Reset) */}
+                <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
+                  <Button variant="outline" size="lg" aria-label={timer.running ? "Pause" : "Play"} onClick={onStartPause}>
+                    {timer.running ? <><Pause />&nbsp;일시정지</> : <><Play />&nbsp;시작</>
+                    }
+                  </Button>
+                  <Button variant="outline" size="lg" aria-label="reset" onClick={onReset}>
+                    <RotateCcw />&nbsp;초기화
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card >
+
+          {/* Footer */}
+          <footer className="w-full max-w-lg mx-auto mt-6 flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-300">
+            <div>오늘 완료 세션: <span className="font-semibold text-neutral-800 dark:text-neutral-100">{todaySessions}</span>&nbsp;회</div>
+            <div>
+              집중 {settings.focusMinutes}분 · 휴식 {settings.breakMinutes}분
+            </div>
+          </footer>
+        </div>
+      </div>
     </>
   )
 }
